@@ -90,6 +90,7 @@ Python-CV_demo/
 │       ├── app.js                # 前端逻辑
 │       └── echarts.min.js
 └── README.md                     # 项目说明文档
+```
 ## 📥 模型下载 (Model Zoo)
 
 ⚠️ **注意**：由于 GitHub 文件大小限制，模型权重文件未上传。请下载下方网盘中的 `face_recoginition_models` 文件夹，并按路径放置。
@@ -100,7 +101,3 @@ Python-CV_demo/
 | **mtcnn/*.pth** | 人脸检测权重 (P/R/O Net) | `face_recognition/app/save_model/mtcnn/` | 同上 (包含在链接中) |
 
 > **安装提示**：下载后请确保 `save_model` 目录下的结构与上述路径一致，否则程序会报错找不到模型。
-
-模型文件,说明,存放路径 (Relative Path),下载链接
-mobilefacenet.pth,识别模型权重以及mtcnn/*.pth,检测模型权重[🔗 通过网盘分享的文件：face_recoginition_models
-链接: https://pan.baidu.com/s/17jZt7Ck2vu65vcU2rZC3Iw?pwd=h4bc 提取码: h4bc]
