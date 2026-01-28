@@ -101,6 +101,55 @@ ws.onmessage = function(event) {
         var newData = JSON.parse(event.data);
         console.log("收到数据:", newData);
 
+        // 显示实时图像
+        if (newData.image) {
+            var imgElement = document.getElementById('live-video');
+            if (!imgElement) {
+                // 创建一个包含所有图表和视频的容器
+                var mainContainer = document.createElement('div');
+                mainContainer.style.display = 'flex';
+                mainContainer.style.flexDirection = 'row';
+                mainContainer.style.gap = '10px';
+                
+                // 创建左侧图表容器
+                var chartsContainer = document.createElement('div');
+                chartsContainer.innerHTML = `
+                    <div id="charts-section">
+                        <div id="main" style="width: 600px;height:400px;border:1px solid #ccc;margin:10px;"></div>
+                        <div id="pie-chart" style="width: 600px;height:400px;border:1px solid #ccc;margin:10px;"></div>
+                        <div id="recognized-list" style="margin:10px;"></div>
+                    </div>
+                `;
+                
+                // 创建右侧视频容器
+                var videoContainer = document.createElement('div');
+                videoContainer.style.flex = '1';
+                videoContainer.innerHTML = `
+                    <div style="margin:10px;">
+                        <h3>实时监控画面</h3>
+                        <img id="live-video" style="width:800px;height:600px;border:1px solid #ccc;object-fit:contain;">
+                    </div>
+                `;
+                
+                // 将图表和视频容器添加到主容器
+                mainContainer.appendChild(chartsContainer);
+                mainContainer.appendChild(videoContainer);
+                
+                // 替换body内容
+                document.body.innerHTML = '';
+                document.body.appendChild(mainContainer);
+                
+                // 重新初始化图表
+                myChart = echarts.init(document.getElementById('main'));
+                pieChart = echarts.init(document.getElementById('pie-chart'));
+                myChart.setOption(option);
+                pieChart.setOption(pieOption);
+                
+                imgElement = document.getElementById('live-video');
+            }
+            imgElement.src = 'data:image/jpeg;base64,' + newData.image;
+        }
+
         // 根据后端发送的实际数据格式处理数据
         var currentTime = new Date(); // 获取当前时间
         var xData = formatTime(currentTime); // 格式化为 HH:mm

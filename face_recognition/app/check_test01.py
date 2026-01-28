@@ -233,12 +233,15 @@ def predict(websocket):
 
         # 进行人脸识别
         recognition_result = predictor.recognition(img)
-        if len(recognition_result) == 4:
+        if recognition_result[0] is not None and len(recognition_result) == 4:
             boxes, names, visitor_num, roles = recognition_result
         else:
-            # 处理返回值数量不匹配的情况
-            boxes, names, visitor_num = recognition_result
-            roles = ['unknow'] * len(names)  # 默认身份为unknow
+            # 处理返回值数量不匹配或boxes为None的情况
+            if recognition_result[0] is None:
+                boxes, names, visitor_num = None, [], 0
+            else:
+                boxes, names, visitor_num = recognition_result[:3]
+            roles = ['unknow'] * len(names) if names else []  # 默认身份为unknow
 
         visitor_total += visitor_num
 
@@ -246,7 +249,7 @@ def predict(websocket):
         time_HMS = current_time.strftime("%H:%M:%S")
 
         # 如果有人脸被检测到，绘制边框和标签
-        if boxes is not None and len(boxes) > 0 and len(names) > 0:
+        if boxes is not None and len(boxes) > 0 and names and len(names) > 0:
             img_with_boxes = predictor.draw_face(img.copy(), boxes, names)
         else:
             img_with_boxes = img
@@ -277,7 +280,7 @@ def predict(websocket):
         print(
             f"时间: {time_HMS}, 访客总数: {visitor_total}, 教师: {attendance_records['teachers']}, 学生: {attendance_records['students']}")
 
-        if boxes is not None and len(boxes) > 0 and len(names) > 0:
+        if boxes is not None and len(boxes) > 0 and names and len(names) > 0:
             face_name = names[0]
             face_role = roles[0] if len(roles) > 0 else 'unknow'
 
