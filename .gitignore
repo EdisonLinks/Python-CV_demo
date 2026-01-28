@@ -1,0 +1,18 @@
+# --- 忽略系统垃圾文件 ---
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# --- 忽略 IDE 配置文件 (如 PyCharm) ---
+.idea/
+.vscode/
+
+# --- 【核心】忽略大模型文件 (解决上传失败的关键) ---
+*.pth
+*.onnx
+*.weights
+app/save_model/*.pth
+
+# --- 忽略数据集 (通常数据集太大，不传 GitHub) ---
+face_recognition/app/dataset/
+app/face_db/
